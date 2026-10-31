@@ -1,0 +1,5 @@
+# Every crawler is welcome, search and AI alike.
+User-agent: *
+Allow: /
+
+Sitemap: https://standardlogits.com/sitemap.xml

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<!-- The social card, 1200 × 630 (drawn at 2×): the mark, then the hero as the site shows it, the name
+     with ·Log marked and what Qwen3-8B-Base expected instead. No sentences. scripts/site/render.mjs
+     opens this file and calls draw() with src/lib/standard.json. -->
+<style>
+  @font-face { font-family: "Wix Madefor Display"; src: url("../../node_modules/@stdlogits/ledger/src/fonts/WixMadeforDisplay-latin.woff2") format("woff2"); font-weight: 400 800; }
+  @font-face { font-family: "Wix Madefor Text"; src: url("../../node_modules/@stdlogits/ledger/src/fonts/WixMadeforText-normal-latin.woff2") format("woff2"); font-weight: 400 800; }
+  :root {
+    --paper: #ffffff; --wash: #f4f5f7; --wash2: #ebedf1; --ink: #0e1117; --ink3: #636b7d;
+    --deep: #6a4fe0; --late: #0b87ad;
+    --tint: color-mix(in oklch, var(--deep) 70%, var(--late));
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: "Wix Madefor Text", sans-serif; -webkit-font-smoothing: antialiased; }
+  main { display: grid; align-content: start; gap: 40px; height: 100%; padding: 64px 88px; }
+  .mark { width: 56px; height: 56px; }
+  h1 { font: 600 104px/1 "Wix Madefor Display", sans-serif; letter-spacing: -0.04em; }
+  mark { border-radius: 12px; color: var(--ink); background: color-mix(in oklch, var(--tint) 22%, transparent); box-shadow: 0 0 0 6px color-mix(in oklch, var(--tint) 22%, transparent); }
+  .dist { display: grid; gap: 2px; width: 760px; margin-left: -16px; }
+  .row { display: grid; grid-template-columns: 176px 1fr 200px; align-items: center; gap: 24px; height: 40px; padding: 0 16px; border-radius: 14px; font-size: 20px; }
+  .row.on { background: var(--wash); }
+  .tok { justify-self: start; padding: 2px 10px; border-radius: 8px; background: var(--wash); line-height: 28px; }
+  .on .tok { background: var(--wash2); }
+  .ws { margin-right: 1px; color: var(--ink3); }
+  .bar { position: relative; height: 6px; border-radius: 3px; background: var(--wash); }
+  .bar i { position: absolute; inset: 0 auto 0 0; min-width: 3px; border-radius: 3px; background: var(--tint); }
+  .pct { color: var(--ink3); font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  .pct b { color: var(--ink); font-weight: 600; }
+  .skip { height: 24px; padding: 0 16px; color: var(--ink3); font-size: 16px; font-weight: 500; line-height: 24px; }
+</style>
+</head>
+<body>
+<main>
+  <img class="mark" src="../../public/favicon.svg" alt="" />
+  <h1 id="title"></h1>
+  <div class="dist" id="dist"></div>
+</main>
+<script>
+  // The same formatting as src/lib/odds.ts.
+  const count = (n) => n.toLocaleString("en-US");
+  const percent = (p) => { const v = p * 100; return `${v >= 1 ? v.toFixed(1) : Number(v.toPrecision(2))}%`; };
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
+  const tok = (t) => `<span class="tok">${t.startsWith(" ") ? '<span class="ws">·</span>' : ""}${esc(t.trim())}</span>`;
+
+  window.draw = (data) => {
+    const [log, its] = data.name.pieces;
+    const max = Math.max(...data.top.map((c) => c.p));
+    const row = (c, on, pct) => `<div class="row${on ? " on" : ""}">${tok(c.token)}<span class="bar"><i style="width: ${(c.p / max) * 100}%"></i></span><span class="pct">${pct}</span></div>`;
+    document.getElementById("title").innerHTML = `${esc(data.prompt)} <mark>${esc(log.token.trim())}</mark>${esc(its.token)}`;
+    document.getElementById("dist").innerHTML =
+      data.top.slice(0, 3).map((c) => row(c, false, `<b>${percent(c.p)}</b>`)).join("") +
+      `<p class="skip">⋮ ${count(log.rank - 4)} more</p>` +
+      row(log, true, `rank ${count(log.rank)} · <b>${percent(log.p)}</b>`);
+  };
+</script>
+</body>
+</html>

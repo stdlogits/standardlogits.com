@@ -1,0 +1,32 @@
+{
+  "name": "standardlogits.com",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "standardlogits.com: Standard Logits, who we are and what we make.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && vite build --ssr src/server.ts --outDir .ssr && node scripts/site/prerender.mjs",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "images": "node scripts/site/render.mjs",
+    "verify:deployment": "node scripts/verify-deployment.mjs",
+    "deploy": "bash scripts/deploy.sh"
+  },
+  "dependencies": {
+    "@stdlogits/ledger": "github:stdlogits/ledger#v0.1.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "@types/node": "24.19.2",
+    "svelte": "5.57.2",
+    "svelte-check": "4.4.6",
+    "typescript": "6.0.3",
+    "vite": "8.3.5",
+    "wrangler": "4.156.0"
+  }
+}

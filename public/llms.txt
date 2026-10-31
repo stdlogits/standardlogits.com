@@ -1,0 +1,19 @@
+# Standard Logits
+
+> Standard Logits studies what happens inside language models, and makes tools for seeing it.
+
+Standard Logits (https://standardlogits.com) is @treetowntree (treetown, https://logits.ml) and @_a9lim (a9lim, https://a9l.im), both members of technical staff, with Claude as a contributor. Our work so far is interpretability: reading the units of open language models from their weights and from what they do, and steering and monitoring models as they run.
+
+## Work
+
+- [Neuron Lens](https://neuron-lens.com): what every MLP neuron and attention head in Qwen3-8B and Gemma 4 12B responds to, and what it makes the model say, read from the weights through the R-lens and S-lens, from activations over 15 million tokens, and for Gemma 4 12B from images and sounds; labels by Claude Haiku 5.5. Its own llms.txt: https://neuron-lens.com/llms.txt
+- [Drowse](https://drowse.ai): an interpretability workbench for activation steering and trait monitoring. drowse.ai runs it in the browser through WebGPU, with prompts kept on the device; the Python package (`pip install drowse.ai`) runs it on your own GPU.
+
+## Data and code
+
+- [GitHub: stdlogits](https://github.com/stdlogits): the sites, the research code and Ledger, the design language they share
+- [Hugging Face: stdlogits](https://huggingface.co/stdlogits): the Neuron Lens catalog and the lenses, CC BY 4.0
+
+## This site
+
+The title is the name as a model reads it: after "Standard", Qwen3-8B-Base's likeliest next tokens are "ization" and "ized", and " Log", the first token of our name, comes far down the list. The numbers are in src/lib/standard.json, computed by scripts/site/standard.py, in https://github.com/stdlogits/standardlogits.com.

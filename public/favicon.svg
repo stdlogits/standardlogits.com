@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- The mark: a distribution cut from the depth ramp, in the paper's colour, as Neuron Lens's lens is.
+       The ramp's stops are its oklch mix from deep to late, as Ledger draws it, in each theme. -->
+  <style>
+    .s0 { stop-color: #6a4fe0 } .s1 { stop-color: #4c63dc } .s2 { stop-color: #2a73d0 } .s3 { stop-color: #007fbf } .s4 { stop-color: #0b87ad }
+    .bar { fill: #ffffff }
+    @media (prefers-color-scheme: dark) {
+      .s0 { stop-color: #a08bff } .s1 { stop-color: #86a1ff } .s2 { stop-color: #69b6ff } .s3 { stop-color: #52c9ff } .s4 { stop-color: #4fd8f5 }
+      .bar { fill: #0b0d12 }
+    }
+  </style>
+  <defs>
+    <linearGradient id="ramp">
+      <stop class="s0" offset="0" /><stop class="s1" offset=".25" /><stop class="s2" offset=".5" /><stop class="s3" offset=".75" /><stop class="s4" offset="1" />
+    </linearGradient>
+  </defs>
+  <rect class="tile" width="32" height="32" rx="8" fill="url(#ramp)" />
+  <rect class="bar" x="5.5" y="19" width="3" height="5" rx="1.5" />
+  <rect class="bar" x="10" y="13" width="3" height="11" rx="1.5" />
+  <rect class="bar" x="14.5" y="7" width="3" height="17" rx="1.5" />
+  <rect class="bar" x="19" y="16" width="3" height="8" rx="1.5" />
+  <rect class="bar" x="23.5" y="20" width="3" height="4" rx="1.5" />
+</svg>

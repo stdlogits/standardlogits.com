@@ -1,0 +1,29 @@
+name: CI
+
+# The site's gates: svelte-check and the build (which prerenders the page). Deploys stay manual
+# (scripts/deploy.sh, from a machine signed in to a9's Cloudflare account).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build

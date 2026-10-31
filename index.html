@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)" />
+    <script vite-ignore src="/theme-preflight.js" data-ledger-theme-key="standardlogits.theme"></script>
+    <meta name="description" content="Standard Logits studies what happens inside language models. We make Neuron Lens, which shows what every neuron and attention head in two open models responds to, and Drowse, an interpretability workbench that runs in your browser." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Standard Logits" />
+    <meta property="og:title" content="Standard Logits" />
+    <meta property="og:description" content="Standard Logits studies what happens inside language models." />
+    <meta property="og:url" content="https://standardlogits.com/" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content="https://standardlogits.com/card.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Standard Logits, with the tokens Qwen3-8B-Base expects after “Standard”, and Log far down the list." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image:alt" content="Standard Logits, with the tokens Qwen3-8B-Base expects after “Standard”, and Log far down the list." />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://standardlogits.com/#organization",
+            "name": "Standard Logits",
+            "url": "https://standardlogits.com/",
+            "logo": "https://standardlogits.com/icon-512.png",
+            "description": "Standard Logits studies what happens inside language models.",
+            "sameAs": ["https://github.com/stdlogits", "https://huggingface.co/stdlogits"],
+            "member": [{ "@id": "https://standardlogits.com/#treetown" }, { "@id": "https://a9l.im/#person" }]
+          },
+          {
+            "@type": "Person",
+            "@id": "https://standardlogits.com/#treetown",
+            "name": "treetown",
+            "alternateName": "@treetowntree",
+            "url": "https://logits.ml",
+            "sameAs": ["https://x.com/treetowntree"],
+            "jobTitle": "Member of technical staff",
+            "worksFor": { "@id": "https://standardlogits.com/#organization" }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://a9l.im/#person",
+            "name": "a9lim",
+            "alternateName": "@_a9lim",
+            "url": "https://a9l.im/",
+            "sameAs": ["https://github.com/a9lim", "https://x.com/_a9lim"],
+            "jobTitle": "Member of technical staff",
+            "worksFor": { "@id": "https://standardlogits.com/#organization" }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://standardlogits.com/#website",
+            "url": "https://standardlogits.com/",
+            "name": "Standard Logits",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://standardlogits.com/#organization" }
+          }
+        ]
+      }
+    </script>
+    <!--ssr-head-->
+  </head>
+  <body>
+    <div id="app"><!--ssr-body--></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
