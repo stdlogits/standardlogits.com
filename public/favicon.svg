@@ -1,12 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- The mark: a distribution cut from the depth ramp, in the paper's colour, as Neuron Lens's lens is.
-       The ramp's stops are its oklch mix from deep to late, as Ledger draws it, in each theme. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The mark: the logit curve cut from the depth ramp, in the paper's colour, as Neuron Lens's lens and
+       Drowse's closed eye are. The curve is logit(p) for p from 1% to 99%: p runs across, 0 to 1 over 14
+       to 50, and the logit up, -ln 99 to ln 99 over the same span. It is stroked 4.5 with round caps,
+       as Drowse's eye is. The ramp's stops
+       are its oklch mix from deep to late, as Ledger draws it, in each theme. -->
   <style>
     .s0 { stop-color: #6a4fe0 } .s1 { stop-color: #4c63dc } .s2 { stop-color: #2a73d0 } .s3 { stop-color: #007fbf } .s4 { stop-color: #0b87ad }
-    .bar { fill: #ffffff }
+    .curve { stroke: #ffffff }
     @media (prefers-color-scheme: dark) {
       .s0 { stop-color: #a08bff } .s1 { stop-color: #86a1ff } .s2 { stop-color: #69b6ff } .s3 { stop-color: #52c9ff } .s4 { stop-color: #4fd8f5 }
-      .bar { fill: #0b0d12 }
+      .curve { stroke: #0b0d12 }
     }
   </style>
   <defs>
@@ -14,10 +17,6 @@
       <stop class="s0" offset="0" /><stop class="s1" offset=".25" /><stop class="s2" offset=".5" /><stop class="s3" offset=".75" /><stop class="s4" offset="1" />
     </linearGradient>
   </defs>
-  <rect class="tile" width="32" height="32" rx="8" fill="url(#ramp)" />
-  <rect class="bar" x="5.5" y="19" width="3" height="5" rx="1.5" />
-  <rect class="bar" x="10" y="13" width="3" height="11" rx="1.5" />
-  <rect class="bar" x="14.5" y="7" width="3" height="17" rx="1.5" />
-  <rect class="bar" x="19" y="16" width="3" height="8" rx="1.5" />
-  <rect class="bar" x="23.5" y="20" width="3" height="4" rx="1.5" />
+  <rect class="tile" width="64" height="64" rx="16" fill="url(#ramp)" />
+  <path class="curve" d="M14.36 50C14.47 48.8 14.62 47.6 14.89 46.4C15.15 45.2 15.53 44 16.15 42.8C16.77 41.6 17.64 40.4 18.94 39.2C20.25 38 22.02 36.8 24.27 35.6C26.51 34.4 29.24 33.2 32 32C34.76 30.8 37.49 29.6 39.73 28.4C41.98 27.2 43.75 26 45.06 24.8C46.36 23.6 47.23 22.4 47.85 21.2C48.47 20 48.85 18.8 49.11 17.6C49.38 16.4 49.53 15.2 49.64 14" fill="none" stroke-width="4.5" stroke-linecap="round" />
 </svg>

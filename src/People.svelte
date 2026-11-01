@@ -1,14 +1,16 @@
 <script lang="ts">
   import Part from "./Part.svelte";
+  import a9lim from "./assets/a9lim.webp";
+  import treetown from "./assets/treetown.webp";
 
   // Who we are: a handle (linked to its X account where it has one), a role and a site. A profile
-  // picture goes in `picture` (a file under src/assets, imported); until then a disc holds the name's
-  // first letter.
+  // picture goes in `picture` (a file under src/assets, imported, at three times its 40 px); without
+  // one a disc holds the name's first letter.
   interface Person { name: string; href?: string; role: string; site: string; siteHref: string; picture?: string }
 
   const PEOPLE: Person[] = [
-    { name: "@treetowntree", href: "https://x.com/treetowntree", role: "Member of technical staff", site: "logits.ml", siteHref: "https://logits.ml" },
-    { name: "@_a9lim", href: "https://x.com/_a9lim", role: "Member of technical staff", site: "a9l.im", siteHref: "https://a9l.im" },
+    { name: "@treetowntree", href: "https://x.com/treetowntree", role: "Member of technical staff", site: "logits.ml", siteHref: "https://logits.ml", picture: treetown },
+    { name: "@_a9lim", href: "https://x.com/_a9lim", role: "Member of technical staff", site: "a9l.im", siteHref: "https://a9l.im", picture: a9lim },
     { name: "Claude", role: "Contributor", site: "anthropic.com", siteHref: "https://www.anthropic.com" },
   ];
 
