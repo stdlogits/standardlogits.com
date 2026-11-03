@@ -34,6 +34,9 @@ Wrangler, and checks the live site with `scripts/verify-deployment.mjs`. It need
 `CLOUDFLARE_ACCOUNT_ID` (in the environment or `~/.config/cloudflare/standardlogits.env`); `--dry-run`
 stops before the upload.
 
+Mail to any address at standardlogits.com without its own routing rule reaches both of us through an
+Email Worker (`mail/worker.js`), which `npm run deploy:mail` deploys with the same account.
+
 ## Credits
 
 By a9lim, treetown and Claude. The design is Ledger, whose Wix Madefor faces are under the SIL Open

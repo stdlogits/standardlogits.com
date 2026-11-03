@@ -23,7 +23,8 @@ time and hydrated in the browser.
   theme's key.
 - `scripts/site/`: `standard.py` (the numbers), `prerender.mjs` (the build's last step),
   `render.mjs` and `card.html` (the images). `scripts/deploy.sh`, `scripts/verify-deployment.mjs`:
-  deploy and the live check.
+  deploy and the live check. `scripts/deploy-mail.sh`: deploys the catch-all's Email Worker.
+- `mail/`: that Worker (`worker.js`) and its Wrangler config (below, "Mail").
 
 ## Design
 
@@ -103,3 +104,16 @@ pins every Wrangler call to `CLOUDFLARE_ACCOUNT_ID`, which it requires (from the
 `~/.config/cloudflare/standardlogits.env`, outside the repo). Never run a Wrangler command for this
 site without that account ID. The Pages project and the custom domain must exist in that account
 first. Keep Rocket Loader and email obfuscation off: they add inline scripts the CSP blocks.
+
+## Mail
+
+The domain's mail goes through Cloudflare Email Routing in the same account. A named address forwards
+to one of us (`a9lim@` to mx@a9l.im, `luna@` to hi@logits.ml); every other address meets the
+catch-all, which hands the message to the Email Worker `standardlogits-mail` (`mail/worker.js`), since
+a routing rule forwards to only one address and holds only one action. The Worker forwards it to
+both. Both destinations must stay verified in the account, or forwarding to them fails.
+`npm run deploy:mail` deploys the Worker, pinned to the account as the site's deploy is; it has no
+workers.dev or preview URL. The rules live in the account, not here. `wrangler email routing rules
+update` refuses a Worker on the catch-all, but the API takes it (PUT
+`/zones/{zone}/email/routing/rules/catch_all`, action `{"type": "worker", "value":
+["standardlogits-mail"]}`).

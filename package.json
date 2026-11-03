@@ -14,7 +14,8 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "images": "node scripts/site/render.mjs",
     "verify:deployment": "node scripts/verify-deployment.mjs",
-    "deploy": "bash scripts/deploy.sh"
+    "deploy": "bash scripts/deploy.sh",
+    "deploy:mail": "bash scripts/deploy-mail.sh"
   },
   "dependencies": {
     "@stdlogits/ledger": "github:stdlogits/ledger#v0.1.2"

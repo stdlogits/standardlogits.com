@@ -1,0 +1,10 @@
+// The catch-all's Email Worker (worker.js). No account here: scripts/deploy-mail.sh pins it, as
+// scripts/deploy.sh does the site's. No workers.dev or preview URL: it only receives mail.
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "standardlogits-mail",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-23",
+  "workers_dev": false,
+  "preview_urls": false
+}
