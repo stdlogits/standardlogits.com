@@ -11,7 +11,8 @@ What the site draws for itself, in Ledger:
 
 - **The hero** (`src/Hero.svelte`). The title is the name with its slot: the token the list below is
   about, marked as a unit's firing is (the tint at 22%, grown by its own shadow), ·Log with "its"
-  after it to begin with. The list is Qwen3-8B-Base's likeliest next tokens after "Standard", then
+  after it to begin with. The lead under it finishes its sentence ("studies what happens inside
+  language models."), whichever token the slot holds. The list is Qwen3-8B-Base's likeliest next tokens after "Standard", then
   ·Log far down: Ledger's tokens, flat bars in the tint as wide as each probability against the
   likeliest, and the number in `meta`. Pointing at a row puts its token in the slot (letters morph,
   `MorphText`); choosing one keeps it there, with the wash thumb gliding to its row. The slot's tip

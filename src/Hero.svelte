@@ -6,7 +6,8 @@
   // The name as a model reads it. After "Standard", Qwen3-8B-Base's likeliest next tokens, then our
   // name's first token, " Log", far down the list. The title's slot holds whichever one is chosen or
   // pointed at (·Log, with "its" after it, to begin with) and morphs between them; its tip says what
-  // the model gave it. Every number comes from src/lib/standard.json (scripts/site/standard.py).
+  // the model gave it, and the lead under it finishes its sentence. Every number comes from
+  // src/lib/standard.json (scripts/site/standard.py).
   interface Choice { token: string; p: number; rank: number; tail: string; word: string; say: string }
 
   const MODEL = standard.model.split("/").pop() ?? standard.model;
@@ -40,17 +41,21 @@
 {/snippet}
 
 <header class="hero">
-  <h1 class="title rise">{standard.prompt}{shown.token.startsWith(" ") ? " " : ""}<button type="button" class="slot" data-tip-title={shown.word} data-tip={shown.say} data-tip-sub={MODEL}><MorphText text={shown.token.trim()} numbers={false} /></button><MorphText text={shown.tail} numbers={false} /></h1>
-  <div class="dist rise" style:--i={1} role="group" aria-label="What {MODEL} expects after “{standard.prompt}”. Choose one to put it in the title." use:glide onpointerleave={() => (pointed = null)} onfocusout={leave}>
+  <div class="sentence">
+    <h1 class="title rise">{standard.prompt}{shown.token.startsWith(" ") ? " " : ""}<button type="button" class="slot" data-tip-title={shown.word} data-tip={shown.say} data-tip-sub={MODEL}><MorphText text={shown.token.trim()} numbers={false} /></button><MorphText text={shown.tail} numbers={false} /></h1>
+    <p class="lead rise" style:--i={1}>studies what happens inside language models.</p>
+  </div>
+  <div class="dist rise" style:--i={2} role="group" aria-label="What {MODEL} expects after “{standard.prompt}”. Choose one to put it in the title." use:glide onpointerleave={() => (pointed = null)} onfocusout={leave}>
     {#each top as c, i (c.token)}{@render row(c, i)}{/each}
     <p class="skip" aria-hidden="true">⋮ {count(skipped)} more</p>
     {@render row(name, top.length + 1)}
   </div>
-  <p class="lead rise" style:--i={2}>Standard Logits studies what happens inside language models.</p>
 </header>
 
 <style>
   .hero { display: grid; justify-items: start; gap: var(--s6); min-width: 0; }
+  /* The title and the lead read as one sentence, whichever token the title holds. */
+  .sentence { display: grid; gap: var(--s3); min-width: 0; }
   .title { font: var(--type-title); letter-spacing: -0.04em; overflow-wrap: anywhere; }
   /* The slot: the token the list is about, marked as a unit's firing is, grown by its own shadow. A
    * button, as a token with a tip is, so a keyboard can reach what the model gave it. */
