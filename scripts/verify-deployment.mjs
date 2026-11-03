@@ -139,7 +139,8 @@ async function checkFiles(origin, rules, buildDir) {
   }
 }
 
-// ---------- Browser smoke: the page hydrates under the CSP, and choosing a token changes the title
+// ---------- Browser smoke: the page hydrates under the CSP, the intro runs down the list and lands on
+// ·Log, and choosing a token changes the title
 
 async function browserSmoke(origin) {
   const { chromium } = await import("@playwright/test");
@@ -154,9 +155,15 @@ async function browserSmoke(origin) {
     });
     page.on("pageerror", (error) => problems.push(`page error: ${error.message}`));
     page.on("console", (message) => { if (message.type() === "error") problems.push(`console: ${message.text()}`); });
-    await page.goto(origin, { waitUntil: "networkidle" });
+    await page.goto(origin, { waitUntil: "domcontentloaded" });
     const slot = page.locator("h1 .slot .morph-source");
     assert.equal(await slot.textContent(), "Log", "the title's slot doesn't hold ·Log");
+    // The slot (and the skipped line, when given) holding these texts.
+    const holds = ([text, skip]) => document.querySelector("h1 .slot .morph-source")?.textContent === text && (skip === undefined || document.querySelector(".dist .skip .morph-source")?.textContent === skip);
+    const standard = JSON.parse(await readFile(resolve(root, "src/lib/standard.json"), "utf8"));
+    const skipped = `${(standard.name.pieces[0].rank - standard.top.length - 1).toLocaleString("en-US")} more`;
+    await page.waitForFunction(holds, [standard.top[0].token.trim()], { timeout: 8000 }).catch(() => problems.push("the intro didn't start: the page didn't hydrate"));
+    await page.waitForFunction(holds, ["Log", skipped], { timeout: 10000 }).catch(() => problems.push("the intro didn't land on ·Log"));
     await page.getByRole("button", { name: /deviation/ }).click();
     await page.mouse.move(0, 0);
     await page.waitForFunction(() => document.querySelector("h1 .slot .morph-source")?.textContent === "deviation", null, { timeout: 5000 }).catch(() => problems.push("choosing ·deviation didn't change the title: the page didn't hydrate"));

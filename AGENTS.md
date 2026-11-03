@@ -47,7 +47,9 @@ the server build compiles it too (`ssr.noExternal`) rather than leaving `.svelte
 ## The numbers
 
 The hero shows what Qwen3-8B-Base expects after "Standard": its five likeliest next tokens, then
-" Log", our name's first token, with its rank, then "its". Every number comes from
+" Log", our name's first token, with its rank, then "its"; its intro also runs through a sample of the
+tokens ranked between (32 ranks spaced on a log scale, keeping tokens the title's face can set on one
+line). Every token and number comes from
 `src/lib/standard.json`, which `scripts/site/standard.py` writes (`python scripts/site/standard.py`;
 it needs torch, transformers and the model, from the shared `~/.venv`). It runs the model in float32:
 in bfloat16 the logits near 27 round to steps of 0.125, which ties tokens that differ and moves the
@@ -63,7 +65,7 @@ don't drift from it.
 `<!--ssr-body-->`) and the missing page into `dist/404.html`, which Pages serves with a 404 for any
 path without a file. Hydration needs the prerendered markup and the browser's first render to agree,
 so nothing rendered may depend on the time or the browser: the footer's year is fixed at build time
-(`__YEAR__` in `vite.config.ts`), and the theme starts in `onMount`.
+(`__YEAR__` in `vite.config.ts`), and the theme and the hero's intro start in `onMount`.
 
 ## What the site says about itself
 

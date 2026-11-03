@@ -16,7 +16,12 @@ What the site draws for itself, in Ledger:
   ·Log far down: Ledger's tokens, flat bars in the tint as wide as each probability against the
   likeliest, and the number in `meta`. Pointing at a row puts its token in the slot (letters morph,
   `MorphText`); choosing one keeps it there, with the wash thumb gliding to its row. The slot's tip
-  says what the model gave it and names the model. No sentence explains it.
+  says what the model gave it and names the model. No sentence explains it. The intro shows it instead:
+  once the page has settled, the slot runs down the list as the model ranks it, the top five one by
+  one (held 420 ms, shortening by 50), then a sample of the tokens between ever faster (120 ms down to
+  24), the thumb on the skipped line while it reads each one's rank, and lands on ·Log, about four and
+  a half seconds in. A sampled word too wide for one line is passed over, so the run never jumps the
+  page. Pointing at or choosing a row stops it; reduced motion skips it.
 - **The work** (`src/Work.svelte`). Each product shown by what it shows: Neuron Lens by one unit, L8
   n344 in Qwen3-8B, tinted at layer 8's place on the depth ramp, as on neuron-lens.com's card; Drowse
   by what it does. Each carries its own mark, as its favicon draws it: Neuron Lens's lens and
