@@ -105,7 +105,9 @@ Cloudflare user logged in on this machine also reaches the account that hosts dr
 pins every Wrangler call to `CLOUDFLARE_ACCOUNT_ID`, which it requires (from the environment or
 `~/.config/cloudflare/standardlogits.env`, outside the repo). Never run a Wrangler command for this
 site without that account ID. The Pages project and the custom domain must exist in that account
-first. Keep Rocket Loader and email obfuscation off: they add inline scripts the CSP blocks.
+first. Keep Rocket Loader and email obfuscation off: they add inline scripts the CSP blocks. The
+zone's HSTS setting (a9's) replaces the header with `max-age=31536000; includeSubDomains; preload`,
+which `_headers` repeats (a year is the least the preload list accepts).
 
 ## Mail
 
