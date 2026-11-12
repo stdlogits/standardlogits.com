@@ -18,7 +18,7 @@
     "deploy:mail": "bash scripts/deploy-mail.sh"
   },
   "dependencies": {
-    "@stdlogits/ledger": "github:stdlogits/ledger#v0.1.5"
+    "@stdlogits/ledger": "github:stdlogits/ledger#v0.1.11"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
