@@ -34,8 +34,8 @@ What the site draws for itself, in Ledger:
   1% to 99% stroked in the paper's colour on the ramp tile, a sibling of Neuron Lens's lens and
   Drowse's eye. Ledger's DESIGN.md describes it, with the tile every mark shares, under "The marks and
   the cards".
-- **The card** (`public/card.png`, by `scripts/site/render.mjs`): a painting with the name set over it, as
-  Ledger draws a card. `scripts/site/paint/river.py` paints the logit curve, the mark's figure, as a river at
+- **The card** (`public/card.webp`, by `scripts/site/render.mjs`): a painting with the name set over it, as
+  Ledger draws a card, saved as WebP at quality 92 (a painting weighs a tenth of its PNG that way). `scripts/site/paint/river.py` paints the logit curve, the mark's figure, as a river at
   dusk seen from above, with what the model expected after "Standard" floating down it as lanterns in rank
   order (the river's length the whole vocabulary on a log scale, each lantern as bright as its token was
   likely); `scripts/site/card.html` sets the name with ·Log marked and reads out the likeliest token and

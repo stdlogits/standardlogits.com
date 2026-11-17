@@ -76,7 +76,7 @@ const SITE_FILES = [
   ["/favicon.ico", ["image/x-icon", "image/vnd.microsoft.icon"]],
   ["/apple-touch-icon.png", ["image/png"]],
   ["/icon-512.png", ["image/png"]],
-  ["/card.png", ["image/png"]],
+  ["/card.webp", ["image/webp"]],
   ["/llms.txt", ["text/plain", "text/markdown"]],
   ["/robots.txt", ["text/plain"]],
   ["/sitemap.xml", ["application/xml", "text/xml"]],
