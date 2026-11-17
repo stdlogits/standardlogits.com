@@ -1,59 +1,49 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8" />
-<!-- The social card, 1200 × 630 (drawn at 2×): the mark, then the hero as the site shows it, the name
-     with ·Log marked and what Qwen3-8B-Base expected instead. No sentences. scripts/site/render.mjs
-     opens this file and calls draw() with src/lib/standard.json. -->
+<title>Standard Logits social card</title>
+<!-- The social card, 1200 × 630 (drawn at 2×), as Ledger draws one (its DESIGN.md, "The marks and the cards"): a
+     painting with the name set over it. scripts/site/render.mjs paints it (scripts/site/paint/river.py: the logit
+     curve as a river at dusk, what Qwen3-8B-Base expected after "Standard" floating down it as lanterns) and
+     calls draw() with the painting and where its lanterns float. The type is Ledger's card.css: the name with
+     ·Log marked, and the likeliest token and ·Log read out at their lanterns. No sentences. -->
+<link rel="stylesheet" href="../../node_modules/@stdlogits/ledger/src/styles/card.css" />
 <style>
-  @font-face { font-family: "Wix Madefor Display"; src: url("../../node_modules/@stdlogits/ledger/src/fonts/WixMadeforDisplay-latin.woff2") format("woff2"); font-weight: 400 800; }
-  @font-face { font-family: "Wix Madefor Text"; src: url("../../node_modules/@stdlogits/ledger/src/fonts/WixMadeforText-normal-latin.woff2") format("woff2"); font-weight: 400 800; }
-  :root {
-    --paper: #ffffff; --wash: #f4f5f7; --wash2: #ebedf1; --ink: #0e1117; --ink3: #636b7d;
-    --deep: #6a4fe0; --late: #0b87ad;
-    --tint: color-mix(in oklch, var(--deep) 70%, var(--late));
-  }
-  * { box-sizing: border-box; margin: 0; }
-  body { width: 1200px; height: 630px; overflow: hidden; background: var(--paper); color: var(--ink); font-family: "Wix Madefor Text", sans-serif; -webkit-font-smoothing: antialiased; }
-  main { display: grid; align-content: start; gap: 40px; height: 100%; padding: 64px 88px; }
-  .mark { width: 56px; height: 56px; }
-  h1 { font: 600 104px/1 "Wix Madefor Display", sans-serif; letter-spacing: -0.04em; }
-  mark { border-radius: 12px; color: var(--ink); background: color-mix(in oklch, var(--tint) 22%, transparent); box-shadow: 0 0 0 6px color-mix(in oklch, var(--tint) 22%, transparent); }
-  .dist { display: grid; gap: 2px; width: 760px; margin-left: -16px; }
-  .row { display: grid; grid-template-columns: 176px 1fr 200px; align-items: center; gap: 24px; height: 40px; padding: 0 16px; border-radius: 14px; font-size: 20px; }
-  .row.on { background: var(--wash); }
-  .tok { justify-self: start; padding: 2px 10px; border-radius: 8px; background: var(--wash); line-height: 28px; }
-  .on .tok { background: var(--wash2); }
-  .ws { margin-right: 1px; color: var(--ink3); }
-  .bar { position: relative; height: 6px; border-radius: 3px; background: var(--wash); }
-  .bar i { position: absolute; inset: 0 auto 0 0; min-width: 3px; border-radius: 3px; background: var(--tint); }
-  .pct { color: var(--ink3); font-size: 16px; font-weight: 500; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
-  .pct b { color: var(--ink); font-weight: 600; }
-  .skip { height: 24px; padding: 0 16px; color: var(--ink3); font-size: 16px; font-weight: 500; line-height: 24px; }
+  body { --tint: color-mix(in oklch, var(--deep) 70%, var(--late)); }
+  .card { justify-content: flex-start; }
+  /* The name is the line here, so it is set larger, its token marked as the hero marks it. */
+  .name { font-size: 100px; letter-spacing: -0.04em; }
+  .name mark { border-radius: 12px; color: var(--ink); background: color-mix(in oklch, var(--tint) 38%, transparent); box-shadow: 0 0 0 6px color-mix(in oklch, var(--tint) 38%, transparent); }
 </style>
 </head>
 <body>
-<main>
-  <img class="mark" src="../../public/favicon.svg" alt="" />
-  <h1 id="title"></h1>
-  <div class="dist" id="dist"></div>
+<img class="art" id="art" alt="" />
+<div id="readouts"></div>
+<main class="card">
+  <h1 class="name" id="name"></h1>
 </main>
 <script>
   // The same formatting as src/lib/odds.ts.
   const count = (n) => n.toLocaleString("en-US");
   const percent = (p) => { const v = p * 100; return `${v >= 1 ? v.toFixed(1) : Number(v.toPrecision(2))}%`; };
   const esc = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
-  const tok = (t) => `<span class="tok">${t.startsWith(" ") ? '<span class="ws">·</span>' : ""}${esc(t.trim())}</span>`;
+  const tok = (t, marked) => `<span class="tok${marked ? " marked" : ""}">${t.startsWith(" ") ? '<span class="ws">·</span>' : ""}${esc(t.trim())}</span>`;
 
-  window.draw = (data) => {
-    const [log, its] = data.name.pieces;
-    const max = Math.max(...data.top.map((c) => c.p));
-    const row = (c, on, pct) => `<div class="row${on ? " on" : ""}">${tok(c.token)}<span class="bar"><i style="width: ${(c.p / max) * 100}%"></i></span><span class="pct">${pct}</span></div>`;
-    document.getElementById("title").innerHTML = `${esc(data.prompt)} <mark>${esc(log.token.trim())}</mark>${esc(its.token)}`;
-    document.getElementById("dist").innerHTML =
-      data.top.slice(0, 3).map((c) => row(c, false, `<b>${percent(c.p)}</b>`)).join("") +
-      `<p class="skip">⋮ ${count(log.rank - 4)} more</p>` +
-      row(log, true, `rank ${count(log.rank)} · <b>${percent(log.p)}</b>`);
+  // art: the painting's URL; standard: src/lib/standard.json; lanterns: where each token floats (river.py),
+  // the name's own token with `name` set.
+  window.draw = async ({ art, standard, lanterns }) => {
+    const [log, its] = standard.name.pieces;
+    document.getElementById("name").innerHTML = `${esc(standard.prompt)} <mark>${esc(log.token.trim())}</mark>${esc(its.token)}`;
+    // Two readouts: the likeliest token beside its lantern at the river's mouth, and the name's under its own.
+    document.getElementById("readouts").innerHTML = lanterns.filter((c) => c.rank === 1 || c.name).map((c) => {
+      const [x, y] = c.name ? [c.xy[0] - 6, c.xy[1] + 64] : [c.xy[0] + 34, c.xy[1]];
+      const value = c.name ? `rank ${count(c.rank)} · <b>${percent(c.p)}</b>` : `<b>${percent(c.p)}</b>`;
+      return `<div class="at" style="left: ${x}px; top: ${y}px">${tok(c.token, c.name)}<span class="value">${value}</span></div>`;
+    }).join("");
+    const image = document.getElementById("art");
+    image.src = art;
+    await image.decode();
   };
 </script>
 </body>

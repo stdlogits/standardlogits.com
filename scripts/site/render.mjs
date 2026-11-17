@@ -1,18 +1,31 @@
 #!/usr/bin/env node
-// Draws the site's images into public/: the social card (card.png, from scripts/site/card.html and
-// src/lib/standard.json) and the icons made from the mark (public/favicon.svg): favicon.ico,
-// apple-touch-icon.png and icon-512.png (the organisation's logo in the JSON-LD). Rerun it when the
-// mark, the card or standard.json changes.
+// Draws the site's images into public/: the social card (card.png) and the icons made from the mark
+// (public/favicon.svg): favicon.ico, apple-touch-icon.png and icon-512.png (the organisation's logo in the
+// JSON-LD). The card is a painting with the name set over it (Ledger's DESIGN.md, "The marks and the cards"):
+// scripts/site/paint/river.py paints it from src/lib/standard.json, and scripts/site/card.html sets the type.
+// Rerun it when the mark, the card or standard.json changes. Painting needs Python with numpy, scipy and Pillow
+// (PYTHON, or python3).
 //
 //   npm run images
 
-import { readFile, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { execFile } from "node:child_process";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { promisify } from "node:util";
 import { chromium } from "@playwright/test";
 
 const root = resolve(fileURLToPath(import.meta.url), "../../..");
 const at = (path) => resolve(root, path);
+
+/** The card's painting, at twice the card's size and reduced, into a folder of its own, and where its lanterns float. */
+async function paint(folder) {
+  const art = join(folder, "river.png");
+  const { stdout } = await promisify(execFile)(process.env.PYTHON ?? "python3", [at("scripts/site/paint/river.py"), at("src/lib/standard.json"), "2", art]);
+  process.stdout.write(stdout);
+  return { art: pathToFileURL(art).href, ...JSON.parse(await readFile(`${art}.json`, "utf8")) };
+}
 
 /** An .ico holding PNGs, one entry per size. */
 function ico(pngs) {
@@ -34,11 +47,12 @@ function ico(pngs) {
 }
 
 const standard = JSON.parse(await readFile(at("src/lib/standard.json"), "utf8"));
+const folder = await mkdtemp(join(tmpdir(), "standardlogits-card-"));
 const browser = await chromium.launch();
 try {
-  const card = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 2, colorScheme: "light" });
+  const card = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 2, colorScheme: "dark" });
   await card.goto(pathToFileURL(at("scripts/site/card.html")).href);
-  await card.evaluate((data) => window.draw(data), standard);
+  await card.evaluate((data) => window.draw(data), { standard, ...(await paint(folder)) });
   await card.evaluate(() => document.fonts.ready);
   await writeFile(at("public/card.png"), await card.screenshot({ type: "png" }));
 
@@ -59,4 +73,5 @@ try {
   await writeFile(at("public/favicon.ico"), ico(small));
 } finally {
   await browser.close();
+  await rm(folder, { recursive: true });
 }

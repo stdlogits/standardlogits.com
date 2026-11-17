@@ -22,7 +22,8 @@ time and hydrated in the browser.
   first paint; a file, not inline, because the CSP allows no inline script); `index.html` gives it the
   theme's key.
 - `scripts/site/`: `standard.py` (the numbers), `prerender.mjs` (the build's last step),
-  `render.mjs` and `card.html` (the images). `scripts/deploy.sh`, `scripts/verify-deployment.mjs`:
+  `render.mjs`, `paint/river.py` and `card.html` (the images; the card is a painting, `river.py`, with
+  the name set over it by `card.html`, as Ledger's DESIGN.md draws a card: Python with numpy, scipy and Pillow). `scripts/deploy.sh`, `scripts/verify-deployment.mjs`:
   deploy and the live check. `scripts/deploy-mail.sh`: deploys the catch-all's Email Worker.
 - `mail/`: that Worker (`worker.js`) and its Wrangler config (below, "Mail").
 
